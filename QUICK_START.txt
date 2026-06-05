@@ -126,3 +126,33 @@ Ready to start? Run:
   cd /Users/rp/my-web-app && npm install && npm run dev
 
 Happy coding! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📝 DEVELOPMENT EXAMPLES
+
+Installing additional packages:
+  npm install axios           # HTTP client
+  npm install react-router-dom  # Routing
+  npm install --save-dev prettier  # Code formatter
+  npm install --save-dev eslint    # Linter
+
+Creating new components:
+  mkdir -p src/components/Button
+  touch src/components/Button/Button.tsx
+  touch src/components/Button/Button.css
+
+Checking project status:
+  git status              # See modified files
+  git log --oneline       # View commit history
+  git diff src/App.tsx    # See specific changes
+
+Running with Warp terminal:
+  # Start Warp terminal
+  warp
+  
+  # Navigate to project and run Claude Code
+  cd /Users/rp/my-web-app
+  claude
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
