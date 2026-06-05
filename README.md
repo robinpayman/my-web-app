@@ -39,6 +39,24 @@ Preview the production build locally:
 npm run preview
 ```
 
+## Contact Form Configuration
+
+The Contact page submits messages to a Vercel Serverless Function at `/api/contact` and sends email with [Resend](https://resend.com/).
+
+Set these environment variables in Vercel before deploying the contact form:
+
+- `RESEND_API_KEY`: Resend API key used by the serverless function
+- `CONTACT_TO_EMAIL`: Email address that receives contact form submissions
+- `CONTACT_FROM_EMAIL`: Sender address for contact emails, such as `My Web App <onboarding@resend.dev>`
+
+For local development, copy `.env.example` to `.env.local` and fill in your own values:
+
+```bash
+cp .env.example .env.local
+```
+
+Do not commit `.env.local` or any real API keys.
+
 ## Project Structure
 
 ```
