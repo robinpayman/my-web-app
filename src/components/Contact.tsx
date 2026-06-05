@@ -22,6 +22,8 @@ export function Contact() {
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -70,17 +72,45 @@ export function Contact() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitted(false);
+    setSubmitError('');
 
     if (validateForm()) {
-      // In a real application, you would send this data to a backend API
-      console.log('Form submitted:', formData);
-      setSubmitted(true);
-      // Reset form
-      setFormData({ name: '', email: '', message: '' });
-      // Clear success message after 5 seconds
-      setTimeout(() => setSubmitted(false), 5000);
+      setIsSubmitting(true);
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(
+            typeof result.error === 'string'
+              ? result.error
+              : 'Unable to send your message right now. Please try again later.'
+          );
+        }
+
+        setSubmitted(true);
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setSubmitted(false), 5000);
+      } catch (error) {
+        setSubmitError(
+          error instanceof Error
+            ? error.message
+            : 'Unable to send your message right now. Please try again later.'
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -98,6 +128,12 @@ export function Contact() {
           </div>
         )}
 
+        {submitError && (
+          <div className="form-error-message">
+            {submitError}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="contact-form">
           <div className="form-group">
             <label htmlFor="name">Name</label>
@@ -109,6 +145,7 @@ export function Contact() {
               onChange={handleChange}
               placeholder="Your name"
               className={errors.name ? 'input-error' : ''}
+              disabled={isSubmitting}
             />
             {errors.name && <span className="error-message">{errors.name}</span>}
           </div>
@@ -123,6 +160,7 @@ export function Contact() {
               onChange={handleChange}
               placeholder="your.email@example.com"
               className={errors.email ? 'input-error' : ''}
+              disabled={isSubmitting}
             />
             {errors.email && <span className="error-message">{errors.email}</span>}
           </div>
@@ -137,12 +175,13 @@ export function Contact() {
               placeholder="Your message (at least 10 characters)"
               rows={5}
               className={errors.message ? 'input-error' : ''}
+              disabled={isSubmitting}
             />
             {errors.message && <span className="error-message">{errors.message}</span>}
           </div>
 
-          <button type="submit" className="submit-button">
-            Send Message
+          <button type="submit" className="submit-button" disabled={isSubmitting}>
+            {isSubmitting ? 'Sending...' : 'Send Message'}
           </button>
         </form>
       </div>

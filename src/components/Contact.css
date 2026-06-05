@@ -42,6 +42,17 @@
   animation: slideDown 0.3s ease-out;
 }
 
+.form-error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 4px solid #dc3545;
+  font-weight: 500;
+  animation: slideDown 0.3s ease-out;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -92,6 +103,13 @@
 .form-group input::placeholder,
 .form-group textarea::placeholder {
   color: #999;
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.75;
 }
 
 .form-group textarea {
